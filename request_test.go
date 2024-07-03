@@ -2,7 +2,6 @@ package goscraper
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"testing"
 )
@@ -21,7 +20,7 @@ func TestCommonCall(t *testing.T) {
 		t.Fatalf("Expected status code 200, got %d", resp.GetStatusCode())
 	}
 	var bodyMap map[string]string
-	if err := json.Unmarshal(resp.GetBody(), &bodyMap); err != nil {
+	if err := resp.Unmarshal(&bodyMap); err != nil {
 		t.Fatalf("Error unmarshalling response body: %s", err)
 	}
 	if bodyMap["Host"] != "headers.jsontest.com" {
