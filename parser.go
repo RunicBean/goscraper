@@ -4,4 +4,4 @@ import (
 	"net/http"
 )
 
-type ParseFunc func(*http.Response) (any, error)
+type ParseFunc func(*http.Response) (interface{}, error)

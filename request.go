@@ -182,3 +182,20 @@ func NewRequest(targetUrl string, method HttpMethod, options ...Option) (Request
 
 	return r, nil
 }
+
+// Public methods for quick call
+func quickCall(method HttpMethod, targetUrl string, options ...Option) (Response, error) {
+	r, err := NewRequest(targetUrl, method, options...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create http request: %s", err.Error())
+	}
+	return r.Do()
+}
+
+func Get(targetUrl string, options ...Option) (Response, error) {
+	return quickCall(GET, targetUrl, options...)
+}
+
+func Post(targetUrl string, options ...Option) (Response, error) {
+	return quickCall(POST, targetUrl, options...)
+}
