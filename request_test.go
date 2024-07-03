@@ -142,3 +142,23 @@ func TestTimeout(t *testing.T) {
 		t.Fatalf("Expected timeout error, but got nil")
 	}
 }
+
+func TestQuickCall(t *testing.T) {
+	testUrl := "https://httpbin.org/get"
+	resp, err := Get(testUrl)
+	if err != nil {
+		t.Fatalf("Error test quick call get: %s", err)
+	}
+	if resp.GetStatusCode() != 200 {
+		t.Fatalf("Expected status code 200, but got %d", resp.GetStatusCode())
+	}
+
+	testUrl = "https://httpbin.org/post"
+	resp, err = Post(testUrl, WithData(map[string]string{"data": "test"}))
+	if err != nil {
+		t.Fatalf("Error test quick call post: %s", err)
+	}
+	if resp.GetStatusCode() != 200 {
+		t.Fatalf("Expected status code 200, but got %d", resp.GetStatusCode())
+	}
+}
