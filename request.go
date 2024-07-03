@@ -3,6 +3,7 @@ package scraper
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"fmt"
 	"io"
 	"log"
@@ -29,6 +30,7 @@ type Request interface {
 	WithJson(jsonStr string) Request
 	WithHeaders(headers map[string]string) Request
 	WithBearerToken(token string) Request
+	WithBasicAuth(username, password string) Request
 	Do() (Response, error)
 }
 
@@ -136,6 +138,17 @@ func WithBearerToken(token string) Option {
 
 func (r *request) WithBearerToken(token string) Request {
 	WithBearerToken(token)(r)
+	return r
+}
+
+func WithBasicAuth(username, password string) Option {
+	return func(r *request) {
+		r.AddHeader("Authorization", fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", username, password)))))
+	}
+}
+
+func (r *request) WithBasicAuth(username, password string) Request {
+	WithBasicAuth(username, password)(r)
 	return r
 }
 
