@@ -57,6 +57,19 @@ func TestOptions(t *testing.T) {
 	if bm == nil || bm["authenticated"] == false {
 		t.Fatalf("Expected authenticated to be true, got %v", bm["success"])
 	}
+
+	// Test Basic Auth
+	resp, err = Get("https://httpbin.org/basic-auth/user/passwd", WithBasicAuth("user", "passwd"))
+	if err != nil {
+		t.Fatalf("Error making request: %s", err)
+	}
+	bm, err = resp.GetBodyMap()
+	if err != nil {
+		t.Fatalf("Error getting body map: %s", err)
+	}
+	if bm == nil || bm["authenticated"] == false {
+		t.Fatalf("Expected authenticated to be true, got %v", bm["success"])
+	}
 }
 
 func TestForbidden(t *testing.T) {
